@@ -10,7 +10,7 @@ class Stock(EmbeddedDocument):
     symbol = StringField(required = True)
     name = StringField(required = True)
     price = FloatField(required = True)
-    delta = FloatField(required = True)
+    delta = StringField(required = True)
 
 
 class OwnedStock(EmbeddedDocument):
@@ -41,7 +41,7 @@ def newUser(username, email, password):
         return  'username already exist'
     if User.objects(email = email):
         return 'email address already used'
-    user = User(username, email, password)
+    user = User(username = username, email = email, password = password)
     # apple = newStock(apple)
     # use the scrape to get info by name
     # then store the info into watchlist
@@ -51,25 +51,27 @@ def newUser(username, email, password):
 
 def newStock(symbol, name, price, delta):
     if len(StockInfo.objects()) > 0:
-        allStocks = StockInfo.objects().first().allStocks()
+        stockCollector = StockInfo.objects().first()
+        print(stockCollector)
+        allStocks = stockCollector.allStocks
         for stock in allStocks:
             if symbol == stock.symbol:
                 return 'stock info already exist in db'
         print('adding new stock')
-        stock = Stock(symbol, name, price, delta)
+        stock = Stock(symbol = symbol, name = name, price = price, delta = delta)
         allStocks.append(stock)
         StockInfo.objects().first().save()
         print('new stock addede')
     else:
         print('first time adding stock, creating new stock list')
         newStockList = StockInfo()
-        stock = Stock(symbol, name, price, delta)
+        stock = Stock(symbol = symbol, name = name, price = price, delta = delta)
         newStockList.allStocks.append(stock)
         newStockList.save()
         print('first stock added in the liust')
     return('success')
         
-newStock('APL', 'Apple', 2.333, 12.22297)
+print(newStock('APL', 'Apple', 2.333, 'delta is here'))
 # newUser('a', 'a.casda', 'asd')
 print(json.dumps(json.loads(StockInfo.objects().to_json()), sort_keys=True, indent=4))
 

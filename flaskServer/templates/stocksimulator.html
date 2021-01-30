@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Simulator (Login)</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+
+</head>
+
+<body>
+    <main id="main">
+
+
+    </main>
+    <div class="container">
+      <div class="row" style="background-image: url('stock.jpg');">
+        <div class="col-8" >
+          <h1 style="font-size:70px; text-align:center; color:white; margin-top: 50%;">Stock Simulator</h1>
+
+        </div>
+
+          <!--column 2-->
+        <div class="col-4" >
+
+            <div id="button" style="text-align:right;">
+                    <a style="margin-top:5%;" href="homepage.html" role="button" class="btn btn-outline-primary">Sign Up</a>
+            </div>
+
+            <h1 style="margin-top:80px; font-size: 40px; text-align:center; color:white;" id="login-header">Welcome!</h1>
+            <h3 style="margin-top:10px; font-size: 20px; text-align:center; color:white;" id="login-subheader">Sign in to your account</h3>
+
+            <form id="login-form" style="margin-top:20px">
+                <div class="form-group" style="margin-top:100px">
+                    <label for="useremail" style="color:white;">Username</label>
+                    <input  type="text" name="username" id="username-field" class="form-control" placeholder="Username" >
+
+                </div>
+
+                <div class="form-group" style="margin-top:15px">
+                    <label for="userpassword" style="color:white;">Password</label>
+                    <input name="password" id="password-field" class="form-control" type = "Password" placeholder = "Password" >
+
+                </div>
+
+                <!-- login button-->
+                <div class="d-grid gap-1">
+                    <a style="margin-top:18%;" href="homepage.html" role="button" class="btn btn-primary btn-block">Login</a>
+
+                </div>
+
+                <!--to extend the container to the bottom (can change if we add more things to the other container)-->
+                <div id="space" style="height:100%">
+                    <h1 style="font-size:10%; text-align:center; color:lightblue; margin-top: 250px;">Stock Simulator/image</h1>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <script src="js/bootstrap.js"></script>
+
+    <script>
+        //password toggle visibility
+        function passwordToggle() {
+            var i = document.getElementById("password-field");
+
+            if (i.placeholder ==== "Password") {
+                i.type = "text";
+            }
+
+            else{
+                i.placeholder = "Password";
+            }
+        }
+
+    </script>
+</body>
+</html>

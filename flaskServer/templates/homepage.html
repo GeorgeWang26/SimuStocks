@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class = "row">
+            <div class="col-3" style="background-color:lightblue;">
+                <!--heading/logo placeholder-->
+                 <a class="btn btn-primary-outline" href="homepage.html" style="font-size:200%; text-align:center; color:white; margin-top: 13%;" >Stock Simulator</a>
+
+                <!--buttons on the left nav bar   ------ add href -->
+                <div class="d-grid gap-2" style="margin-top:20%;" >
+                    <a class="btn btn-primary-outline" style="text-align:left; " onMouseOver="this.style.backgroundColor='lightgrey'" onMouseOut="this.style.backgroundColor='lightblue'"!important>Holdings</a>
+                    <a class="btn btn-primary-outline" style="text-align:left; " onMouseOver="this.style.backgroundColor='lightgrey'" onMouseOut="this.style.backgroundColor='lightblue'"!important>Stock Market Trends</a>
+                </div>
+
+
+            </div>
+
+            <div class="col-9">
+                <!-- button to bring user to the stock list page -- (will bring them to another page to choose stocks) -->
+                <div id="button" style="text-align:right;">
+                    <button id="AddButton" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#stockpop" style="margin-top:5%; margin-right:2%">Add Stock</button>
+                </div>
+
+                <!--pop-up -->
+                <div id="stockpop" class="modal fade" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Stock Market</h3>
+                                <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>stock info</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <table class="table" style="margin-top:5%">
+                      <thead>
+                            <tr>
+                                <!--table headers -->
+                                <th scope="col" style="font-size:270%; color:lightblue;"></th>
+                                <th scope="col" style="font-size:220%; color:lightblue;">Stocks</th>
+                                <th scope="col" style="font-size:220%; color:lightblue;">Price</th>
+                                <th scope="col" style="font-size:220%; color:lightblue;">Daily Change</th>
+                            </tr>
+                      </thead>
+                      <tbody>
+                      <!--one row of the table-->
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>Apple</td>
+                              <td>##</td>
+                              <td>%%</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">2</th>
+                              <td>Amazon</td>
+                              <td>##</td>
+                              <td>%%</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">3</th>
+                              <td>S&P 500</td>
+                              <td>##</td>
+                              <td>%%</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">4</th>
+                              <td>asdfasdf</td>
+                              <td>##</td>
+                              <td>%%</td>
+                            </tr>
+                      </tbody>
+
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!--<div class="container">
+        <div class="row">
+            <div class="col-4">
+                 <h1 style="font-size:40px; text-align:center; color:lightblue; margin-top: 80px;">Stock</h1>
+            </div>
+            <div class="col-4">
+                <h1 style="font-size:40px; text-align:center; color:lightblue; margin-top: 80px;">Price</h1>
+            </div>
+            <div class="col-4">
+                 <h1 style="font-size:40px; text-align:center; color:lightblue; margin-top: 80px;">Day's Change</h1>
+            </div>
+          </div>
+      </div>
+    </div> -->
+
+    <script src="js/bootstrap.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+            $("#AddButton").click(function(){
+                $("#stockpop").modal();
+            });
+        });
+    </script>
+
+</body>
+</html>

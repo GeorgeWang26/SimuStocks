@@ -2,7 +2,7 @@ from mongoengine import Document, connect
 from mongoengine.document import EmbeddedDocument
 from mongoengine.fields import EmbeddedDocumentField, FloatField, SortedListField, StringField
 
-connect('stockSimulator')
+connect('StockSimulator')
 
 class Stock(EmbeddedDocument):
     name = StringField(required = True)
@@ -32,7 +32,8 @@ class User(Document):
 
 
 def newUser(username, email, password):
-    if User.objects(username = username)
+    if User.objects(username = username):
+
 
 
 

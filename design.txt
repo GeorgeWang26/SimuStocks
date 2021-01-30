@@ -1,0 +1,22 @@
+stock
+    name
+    symbol
+    current price
+    change from yesterday
+
+
+ownedstock
+    stock
+    amount
+    value
+
+
+user
+    name
+    email
+    password
+    balence
+    total stock value
+    ownedstock [ownedstock]
+    watchlist [stock]
+

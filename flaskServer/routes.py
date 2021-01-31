@@ -99,8 +99,8 @@ def userhome(username):
 def addWatchList():
     username = request.form['username']
     symbol = request.form['symbol']
-    # result = db.addToWatchList(username, symbol)
-    return jsonify(result = True)
+    result = db.addToWatchList(username, symbol)
+    return jsonify(result = result)
 
 
 @app.route('/getWatchList/<username>', methods = ['GET'])

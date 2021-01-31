@@ -5,18 +5,18 @@
     <title>Stock Simulator (Login)</title>
 
     <link rel="stylesheet" href="css/bootstrap.css">
-
+    <link rel="stylesheet" href="css/background.css">
 
 </head>
 
-<body>
+<body style="background-image: url('stock.jpg');">
 
 <div class="main-wrapper" style="height:100hv">
 
 
 
     <div class="container" style="height:100%">
-      <div class="row" style="background-image: url('stock.jpg');">
+      <div class="row">
         <div class="col-8" >
           <h1 style="font-size:70px; text-align:center; color:white; margin-top: 50%;">Stock Simulator</h1>
 
@@ -47,7 +47,7 @@
 
                 <!-- login button-->
                 <div class="d-grid gap-1">
-                    <a style="margin-top:18%;" href="homepage.html" role="button" class="btn btn-primary btn-block">Login</a>
+                    <a style="margin-top:18%;" role="button" id="signin" class="btn btn-primary btn-block">Login</a>
 
                 </div>
 
@@ -69,21 +69,7 @@
 
 
     <script src="js/bootstrap.js"></script>
+    <script src="js/script.js"></script>
 
-    <script>
-        //password toggle visibility
-        function passwordToggle() {
-            var i = document.getElementById("password-field");
-
-            if (i.placeholder ==== "Password") {
-                i.type = "text";
-            }
-
-            else{
-                i.placeholder = "Password";
-            }
-        }
-
-    </script>
 </body>
 </html>

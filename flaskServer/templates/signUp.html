@@ -1,78 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>SignUp</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/bootstrap.js"></script>
 </head>
-<body style="background-image: url('stock.jpg');">
+
+<body style="background-image: url('/static/stock.jpg');">
 
     <div class="container">
-      <div class="row">
-          <div class="col-3" >
+        <div class="row">
+            <div class="col-3">
 
-          </div>
+            </div>
 
-          <div class="col-6" >
+            <div class="col-6">
 
-              <h1 style="margin-top:20%; font-size: 250%; text-align:center; color:white;" id="signup-header">Stock Simulator</h1>
-              <h2 style="margin-top:5%; font-size: 150%; text-align:center; color:white;" id="signup-subheader">Sign Up!</h2>
-             <form id="login-form" style="margin-top:3%">
-
-                <!--email-->
-                <div class="form-group" style="margin-top:9%">
-                    <label for="email-field" style="color:white;">Email</label>
-                    <input  type="email" name="username" id="email-field" class="form-control" placeholder="Email" >
-
-                </div>
-
-                <!--username-->
-                <div class="form-group" style="margin-top:5%">
-                    <label for="username-field" style="color:white;">Username</label>
-                    <input  type="text" name="username" id="username-field" class="form-control" placeholder="Username" >
-
-                </div>
-
-                <!--password-->
-                <div class="form-group" style="margin-top:5%">
-                    <label for="password-field" style="color:white;">Password</label>
-                    <input name="password" id="password-field" class="form-control" type = "Password" placeholder = "Password" >
-
-                </div>
-
-                <div class="form-group" style="margin-top:5%">
-                    <label for="password-check" style="color:white;">Re-enter Password</label>
-                    <input name="password" id="password-check" class="form-control" type = "Password" placeholder = "Password" >
-
-                </div>
-
-                <!-- signup button-->
-                <div class="d-grid gap-1">
-                    <a style="margin-top:10%;" href="homepage.html" role="button" id="signin" class="btn btn-primary btn-block">Sign Up</a>
-
-                </div>
-
-                 <!--to extend the container to the bottom (can change if we add more things to the other container)-->
-                <div id="space" style="height:100%">
-                    <h1 style="font-size:5%; text-align:center; color:transparent; margin-top: 20%;">Stock Simulator</h1>
-                </div>
+                <img src="/static/logo.png" width="100%" style="margin-top:10%">
+                <h2 style="margin-top:5%; font-size: 150%; text-align:center; color:white;" id="signup-subheader">Sign
+                    Up!</h2>
 
 
+                    <!--email-->
+                    <div class="form-group" style="margin-top:9%">
+                        <label for="email-field" style="color:white;">Email</label>
+                        <input type="email" name="username" id="email-field" class="form-control" placeholder="Email">
 
-            </form>
-          </div>
+                    </div>
 
-          <div class="col-3" >
+                    <!--username-->
+                    <div class="form-group" style="margin-top:5%">
+                        <label for="username-field" style="color:white;">Username</label>
+                        <input type="text" name="username" id="username-field" class="form-control"
+                            placeholder="Username">
 
-          </div>
-      </div>
+                    </div>
+
+                    <!--password-->
+                    <div class="form-group" style="margin-top:5%">
+                        <label for="password-field" style="color:white;">Password</label>
+                        <input name="password" id="password-field" class="form-control" type="Password"
+                            placeholder="Password">
+
+                    </div>
+
+                    <!-- signup button-->
+                    <button class="d-grid gap-1 btn btn-outline-primary btn-block" style="margin-top:10%; width: 100%;" id="signup-button">Sign Up</button>
+
+
+            </div>
+
+            <div class="col-3">
+
+            </div>
+        </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+            var email = document.getElementById('email-field');
+            var username = document.getElementById('username-field');
+            var password = document.getElementById('password-field');
 
-
-
-
-    <script src="js/bootstrap.js"></script>
-
+            document.getElementById('signup-button').onclick = function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/newUser',
+                    data: {email: email.value,
+                    username: username.value,
+                    password: password.value},
+                    success: function (data) {
+                        console.log(data)
+                    },
+                    error: function () {
+                        alert('error')
+                    }
+                })
+            };
+    </script>
+ 
 </body>
+
 </html>

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Homepage</title>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <!--icon library-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 
 </head>
 
@@ -11,7 +15,7 @@
 <!-- button to bring user to the stock list page -- (will bring them to another page to choose stocks) -->
     <div id="button" style="text-align:right;">
         <button id="AddButton" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#stockpop" style="margin-top:5%; margin-right:2%">Add Stock</button>
-        <a href="portfolio.html" class="btn btn-outline-primary"  style="margin-top:5%; margin-right:2%">Portfolio</a>
+        <a href="portfolio.html" class="btn btn-outline-primary" style="margin-top:5%; margin-right:2%">Portfolio</a>
     </div>
 
     <!--pop-up for the user to choose the stock-->
@@ -24,7 +28,16 @@
                 </div>
 
                 <div class="modal-body">
-                    <p>stock info</p>
+                    <div class="input-group">
+                          <div class="form-outline">
+                              <input type="search" id="searching" placeholder="Search" class="form-control"/>
+                          </div>
+
+                          <button type="submit" class="btn btn-outline-primary">
+                            <i class="fa fa-search"></i>
+                          </button>
+                    </div>
+                    <h1 style="margin-top:20%"></h1>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="testbutton" class="btn btn-outline-primary" data-dismiss="modal">Continue</button>
@@ -131,7 +144,7 @@
                   </div>
         </div>
 
-         <div class="accordion-item">
+         <div class="accordion-item" id="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         <div class="container">
@@ -165,23 +178,56 @@
                         </div>
                     </div>
                   </div>
-        </div>
-
-
-
+         </div>
     </div>
 
 
 
 
+<!--    <script>-->
+<!--        document.getElementById('testbutton').onclick = function() {-->
+<!--            alert("button was clicked");-->
+<!--            var i=4;-->
+<!--            var div=document.createElement('div');-->
+
+<!--        };-->
+
+<!--    </script>-->
+
     <script>
-        document.getElementById('testbutton').onclick = function() {
-            alert("button was clicked");
-            var i=3;
-        };
+
+            var $accordion-item = $(".accordion-item");
+
+            var hash = 3;
+            document.getElementById('testbutton').onclick = function() {
+                alert("button was clicked");
+<!--                var $newPanel = $template.clone();-->
+<!--                $newPanel.find(".collapse").removeClass("in");-->
+<!--                $newPanel.find(".accordion-toggle").attr("href", "#" + (++hash))-->
+<!--                    .text("stock + ## + %%" );-->
+<!--                $newPanel.find(".accordian-collapse").attr("id", hash).addClass("collapse").removeClass("in");-->
+<!--                $("#stockTable").append($newPanel.fadeIn());-->
+            };
+
+
+
+
 
     </script>
 
+<script>
+        let colTitles = ['This is collum', 'George cringe', 'Fred cool af']
+        for (let i = 0; i < colTitles.length; i++) {
+            let a = document.createElement('div')
+            let b = document.createElement('h6')
+            b.className = "myStyles another-class class2 class3"
+            b.textContent = colTitles[i]
+            a.appendChild(b)
+            document.querySelector('.main').appendChild(a)
+        }
+    </script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -1,7 +1,7 @@
 from flaskServer import app
 from flask import render_template, request, jsonify, redirect, abort
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-import db
+# import db
 
 app.config['SECRET_KEY'] = 'hahahhaha'
 
@@ -47,15 +47,16 @@ def checkStatus():
 def signup():
     if current_user.is_authenticated:
         return redirect('/userhome')
-    return render_template('signup.html')
+    return render_template('signUp.html')
 
 @app.route('/newUser', methods = ['POST'])
 def newUser():
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
-    result = db.addUser(username, email, password)
-    return jsonify(result = result)
+    # result = db.addUser(username, email, password)
+    print(email, username, password)
+    return jsonify(result = "True")
 
 
 
@@ -64,13 +65,14 @@ def newUser():
 def signin():
     if current_user.is_authenticated:
         return redirect('/userhome')
-    return (render_template('signin.html'))
+    return (render_template('stocksimulator.html'))
 
 @app.route('/authenticate', methods = ['POST'])
 def authenticate():
     username = request.form['username']
     password = request.form['password']
-    result = db.authenticate(username, password)
+    #result = db.authenticate(username, password)
+    result = "Success"
     if type(result) == str:
         return jsonify(result = result)
     else:

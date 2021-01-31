@@ -1,89 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Stock Simulator (Login)</title>
 
-    <link rel="stylesheet" href="css/bootstrap.css">
-
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/background.css">
 
 </head>
 
-<body>
+<body style="background-image: url('/static/stock.jpg'); background-repeat: no-repeat;">
 
-<div class="main-wrapper" style="height:100hv">
+    <div class="main-wrapper" style="height:100hv">
 
 
 
-    <div class="container" style="height:100%">
-      <div class="row" style="background-image: url('stock.jpg');">
-        <div class="col-8" >
-          <h1 style="font-size:70px; text-align:center; color:white; margin-top: 50%;">Stock Simulator</h1>
+        <div class="container" style="height:100%">
+            <div class="row">
+                <div class="col-8">
+                    <img src="/static/logo.png" width="100%" style="margin-top:45%">
 
-        </div>
+                </div>
 
-          <!--column 2-->
-        <div class="col-4" >
+                <!--column 2-->
+                <div class="col-4">
 
-            <div id="button" style="text-align:right;">
-                    <a style="margin-top:5%;" href="signUp.html" role="button" class="btn btn-outline-primary">Sign Up</a>
+
+                    <h1 style="margin-top:80px; font-size: 40px; text-align:center; color:white;" id="login-header">
+                        Welcome!</h1>
+                    <h3 style="margin-top:10px; font-size: 20px; text-align:center; color:white;" id="login-subheader">
+                        Sign in to your account</h3>
+
+                    <div class="form-group" style="margin-top:100px">
+                        <label for="username-field" style="color:white;">Username</label>
+                        <input type="text" name="username" id="username-field" class="form-control"
+                            placeholder="Username">
+
+                    </div>
+
+                    <div class="form-group" style="margin-top:15px">
+                        <label for="password-field" style="color:white;">Password</label>
+                        <input name="password" id="password-field" class="form-control" type="Password"
+                            placeholder="Password">
+                    </div>
+
+                    <!-- login button-->
+                    <button class="d-grid gap-1 btn btn-outline-primary btn-block" style="margin-top:20px; width:100%" role="button" id="signin">Login</button>
+                    <a class="d-grid gap-1 btn btn-outline-primary btn-block" href= "/signup"style="margin-top:10px; width:100%" role="button" id="signup">Sign up</a>
+                </div>
+
+
             </div>
-
-            <h1 style="margin-top:80px; font-size: 40px; text-align:center; color:white;" id="login-header">Welcome!</h1>
-            <h3 style="margin-top:10px; font-size: 20px; text-align:center; color:white;" id="login-subheader">Sign in to your account</h3>
-
-            <form id="login-form" style="margin-top:20px">
-                <div class="form-group" style="margin-top:100px">
-                    <label for="username-field" style="color:white;">Username</label>
-                    <input  type="text" name="username" id="username-field" class="form-control" placeholder="Username" >
-
-                </div>
-
-                <div class="form-group" style="margin-top:15px">
-                    <label for="password-field" style="color:white;">Password</label>
-                    <input name="password" id="password-field" class="form-control" type = "Password" placeholder = "Password" >
-
-                </div>
-
-                <!-- login button-->
-                <div class="d-grid gap-1">
-                    <a style="margin-top:18%;" href="homepage.html" role="button" class="btn btn-primary btn-block">Login</a>
-
-                </div>
-
-                <!--to extend the container to the bottom (can change if we add more things to the other container)-->
-                <div id="space" style="height:100%">
-                    <h1 style="font-size:10%; text-align:center; color:lightblue; margin-top: 55%;">Stock Simulator</h1>
-                </div>
-
-            </form>
-
-
         </div>
 
-
-      </div>
     </div>
 
-</div>
 
-
-    <script src="js/bootstrap.js"></script>
-
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        //password toggle visibility
-        function passwordToggle() {
-            var i = document.getElementById("password-field");
+        var username = document.getElementById('username-field');
+        var password = document.getElementById('password-field');
 
-            if (i.placeholder ==== "Password") {
-                i.type = "text";
-            }
-
-            else{
-                i.placeholder = "Password";
-            }
-        }
-
+        document.getElementById('signin').onclick = function () {
+            $.ajax({
+                type: 'POST',
+                url: '/authenticate',
+                data: {
+                    username: username.value,
+                    password: password.value
+                },
+                success: function (data) {
+                    console.log(data)
+                },
+                error: function () {
+                    alert('error')
+                }
+            })
+        };
     </script>
+
 </body>
+
 </html>

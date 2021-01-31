@@ -46,8 +46,10 @@
                     </div>
 
                     <!-- login button-->
-                    <button class="d-grid gap-1 btn btn-outline-primary btn-block" style="margin-top:20px; width:100%" role="button" id="signin">Login</button>
-                    <a class="d-grid gap-1 btn btn-outline-primary btn-block" href= "/signup"style="margin-top:10px; width:100%" role="button" id="signup">Sign up</a>
+                    <button class="d-grid gap-1 btn btn-outline-primary btn-block" style="margin-top:20px; width:100%"
+                        role="button" id="signin">Login</button>
+                    <a class="d-grid gap-1 btn btn-outline-primary btn-block" href="/signup"
+                        style="margin-top:10px; width:100%" role="button" id="signup">Sign up</a>
                 </div>
 
 
@@ -73,6 +75,12 @@
                 },
                 success: function (data) {
                     console.log(data)
+                    if (data.result == "success") {
+                        window.location.pathname = "/userhome";
+                    } else {
+                        console.log('error', data.result)
+                        // pop up window here with display message: <data.result>
+                    }
                 },
                 error: function () {
                     alert('error')

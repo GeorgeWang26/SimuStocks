@@ -1,7 +1,7 @@
 from flaskServer import app
 from flask import render_template, request, jsonify, redirect, abort
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-# import db
+import db
 
 app.config['SECRET_KEY'] = 'hahahhaha'
 
@@ -54,9 +54,10 @@ def newUser():
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
-    # result = db.addUser(username, email, password)
+    result = db.addUser(username, email, password)
     print(email, username, password)
-    return jsonify(result = "True")
+    print('adding new user', result)
+    return jsonify(result = result)
 
 
 
@@ -71,8 +72,9 @@ def signin():
 def authenticate():
     username = request.form['username']
     password = request.form['password']
-    #result = db.authenticate(username, password)
-    result = "Success"
+    result = db.authenticate(username, password)
+    print(username, password)
+    print('logging in', result)
     if type(result) == str:
         return jsonify(result = result)
     else:
@@ -90,4 +92,4 @@ def logout():
 @app.route('/userhome')
 @login_required
 def userhome():
-    return render_template('userhome.html')
+    return render_template('homepage.html')

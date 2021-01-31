@@ -6,6 +6,7 @@ def connect(symbol):
     try:
         print('tryuing to reach url')
         url = "https://ca.finance.yahoo.com/quote/"+symbol+"?p="+symbol
+        print (url)
         return requests.get(url)
     except:
         print()

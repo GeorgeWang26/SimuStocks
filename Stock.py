@@ -3,7 +3,8 @@ class Stock:
     def __init__(self, name, symbol, price ,change):
         self.name = name
         self.symbol = symbol
-        self.price = float(price)
+        self.price = float(price.replace(',', ''))
+        # self.price = price
         self.change = change
         # print('init')
 

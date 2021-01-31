@@ -23,31 +23,31 @@
                     Up!</h2>
 
 
-                    <!--email-->
-                    <div class="form-group" style="margin-top:9%">
-                        <label for="email-field" style="color:white;">Email</label>
-                        <input type="email" name="username" id="email-field" class="form-control" placeholder="Email">
+                <!--email-->
+                <div class="form-group" style="margin-top:9%">
+                    <label for="email-field" style="color:white;">Email</label>
+                    <input type="email" name="username" id="email-field" class="form-control" placeholder="Email">
 
-                    </div>
+                </div>
 
-                    <!--username-->
-                    <div class="form-group" style="margin-top:5%">
-                        <label for="username-field" style="color:white;">Username</label>
-                        <input type="text" name="username" id="username-field" class="form-control"
-                            placeholder="Username">
+                <!--username-->
+                <div class="form-group" style="margin-top:5%">
+                    <label for="username-field" style="color:white;">Username</label>
+                    <input type="text" name="username" id="username-field" class="form-control" placeholder="Username">
 
-                    </div>
+                </div>
 
-                    <!--password-->
-                    <div class="form-group" style="margin-top:5%">
-                        <label for="password-field" style="color:white;">Password</label>
-                        <input name="password" id="password-field" class="form-control" type="Password"
-                            placeholder="Password">
+                <!--password-->
+                <div class="form-group" style="margin-top:5%">
+                    <label for="password-field" style="color:white;">Password</label>
+                    <input name="password" id="password-field" class="form-control" type="Password"
+                        placeholder="Password">
 
-                    </div>
+                </div>
 
-                    <!-- signup button-->
-                    <button class="d-grid gap-1 btn btn-outline-primary btn-block" style="margin-top:10%; width: 100%;" id="signup-button">Sign Up</button>
+                <!-- signup button-->
+                <button class="d-grid gap-1 btn btn-outline-primary btn-block" style="margin-top:10%; width: 100%;"
+                    id="signup-button">Sign Up</button>
 
 
             </div>
@@ -59,27 +59,35 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-            var email = document.getElementById('email-field');
-            var username = document.getElementById('username-field');
-            var password = document.getElementById('password-field');
+        var email = document.getElementById('email-field');
+        var username = document.getElementById('username-field');
+        var password = document.getElementById('password-field');
 
-            document.getElementById('signup-button').onclick = function () {
-                $.ajax({
-                    type: 'POST',
-                    url: '/newUser',
-                    data: {email: email.value,
+        document.getElementById('signup-button').onclick = function () {
+            $.ajax({
+                type: 'POST',
+                url: '/newUser',
+                data: {
+                    email: email.value,
                     username: username.value,
-                    password: password.value},
-                    success: function (data) {
-                        console.log(data)
-                    },
-                    error: function () {
-                        alert('error')
+                    password: password.value
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.result == "success") {
+                        window.location.pathname = "/signin";
+                    } else {
+                        console.log('error', data.result)
+                        // pop up window here with display message: <data.result>
                     }
-                })
-            };
+                },
+                error: function () {
+                    alert('error')
+                }
+            })
+        };
     </script>
- 
+
 </body>
 
 </html>

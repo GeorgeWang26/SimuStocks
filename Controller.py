@@ -10,11 +10,12 @@ def getStockInfo(symbol):
         if(src.status_code == 200):
             return PriceCollector.getStock(src)
         else:
-            return("cant find stock with symbol")
+            return("invalid stock symbol")
     except:
         print("some really bad bad things happened")
 
 
 if __name__ == '__main__':    
-    stock = getStockInfo('aapl')
+    stock = getStockInfo('amzn')
+    print(stock)
     print(stock.name, stock.symbol, type (stock.price),stock.price, stock.change)

@@ -8,4 +8,3 @@ class Stock:
     
     def toString(self):
         return self.name + "\n" + self.symbol +  "\n" + self.price + "\n" + self.change
-

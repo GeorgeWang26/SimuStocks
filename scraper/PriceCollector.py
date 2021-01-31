@@ -1,4 +1,4 @@
-import scrape.Stock as Stock
+from Stock import Stock
 import requests
 from bs4 import BeautifulSoup
 
@@ -6,6 +6,7 @@ class PriceCollector:
 
     def connect(symbol):
         try:
+            print('tryuing to reach url')
             url = "https://ca.finance.yahoo.com/quote/"+symbol+"?p="+symbol
             return requests.get(url)
         except:

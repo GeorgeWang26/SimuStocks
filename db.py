@@ -225,7 +225,7 @@ def getOwnedStock(username):
         temp['share'] = share
         temp['value'] = value
         stocks.append(temp)
-    result = {'stocks': stocks, 'totalValue': totalValue}
+    result = {'stocks': stocks, 'totalValue': totalValue, 'balence': user.balence}
     return result
 
 
@@ -278,7 +278,7 @@ if __name__ == '__main__':
     print(data['balence'])
     print(data['stock'])
 
-
+    print(updateAllStockInfo())
 
     # buyStock('a', 'goog', 3)
     # buyStock('a', 'aapl', 1)

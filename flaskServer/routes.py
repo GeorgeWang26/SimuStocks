@@ -133,8 +133,14 @@ def buyStock():
     share = request.form['share']
     result = db.buyStock(username, symbol, share)
     balence = db.getBalence(username)
-    return jsonify(result = result, balence = balence)
+    # return jsonify(result = result, balence = balence)
+    return jsonify(result = 'success', balence = 23.99)
 
+@app.route('/refreshWatchList', methods = ['POST'])
+def refreshWatchList():
+    username = request.form['username']
+    db.updateAllStockInfo()
+    return jsonify(result = db.getWatchList(username))
 
 
 
@@ -155,7 +161,7 @@ def getOwnedStock():
     username = request.form['username']
     result = db.getOwnedStock(username=username)
     return jsonify(result = result)
-    # return jsonify(result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06 })
+    # return jsonify(result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06, 'balence': 213.99 })
 
 
 

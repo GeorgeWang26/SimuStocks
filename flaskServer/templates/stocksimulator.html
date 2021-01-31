@@ -76,9 +76,9 @@
                 success: function (data) {
                     console.log(data)
                     if (data.result == "success") {
-                        window.location.pathname = "/userhome";
+                        window.location.pathname = "/userhome/"+username.value;
                     } else {
-                        alert('error', data.result)
+                        alert(data.result)
                     }
                 },
                 error: function () {

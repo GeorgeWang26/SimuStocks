@@ -42,7 +42,6 @@ def checkStatus():
 
 
 
-@app.route('/')
 @app.route('/signup')
 def signup():
     if current_user.is_authenticated:
@@ -61,7 +60,7 @@ def newUser():
 
 
 
-
+@app.route('/')
 @app.route('/signin')
 def signin():
     if current_user.is_authenticated:
@@ -89,7 +88,20 @@ def logout():
 
 
 
-@app.route('/userhome')
+@app.route('/userhome/<username>')
 @login_required
-def userhome():
+def userhome(username):
+    print('\n\n\n\n\n\n\n-----------------------------------------------------------------------', username, '\n\n\n\n\n\n\n\n\n')
     return render_template('homepage.html')
+
+@app.route('/addWatchList', methods = ['POST'])
+def addWatchList():
+    username = request.form['username']
+    symbol = request.form['symbol']
+    result = db.addToWatchList(username, symbol)
+    return jsonify(result = result)
+
+
+@app.route('/getWatchList/<username>', methods = ['GET'])
+def getWatchList(username):
+    return jsonify(watchList = db.getWatchList(username))

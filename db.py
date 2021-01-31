@@ -7,6 +7,8 @@ import Controller as scrape
 
 
 
+bigNames = ['aapl','goog','amzn']
+
 
 connect('test')
 
@@ -50,9 +52,11 @@ def addUser(username, email, password):
         return  'username already exist'
     if User.objects(email = email):
         return 'email address already used'
-    
     User(username = username, email = email, password = password).save()
     LoginReturn(username = username).save()
+
+    for i in bigNames:
+        addToWatchList(username, i)
 
     return 'success'
 
@@ -131,10 +135,6 @@ def addToWatchList(username, symbol):
 
 
 
-
-
-
-
 def removeFromWatchList(username, symbol):
     symbol = symbol.upper()
     user = User.objects(username = username).first()
@@ -144,6 +144,24 @@ def removeFromWatchList(username, symbol):
             user.save()
             return('success')
     return ('stock not found')
+
+
+
+def getWatchList(username):
+    user = User.objects(username = username).first()
+    stocks = []
+    for i in user.watchList:
+        symbol = i.symbol
+        # print(symbol)
+        stock = Stocks.objects(symbol = symbol).first()
+        temp = {}
+        temp['symbol'] = symbol
+        temp['price'] = stock.price
+        temp['change'] = stock.change
+        stocks.append(temp)
+    return stocks
+
+
 
 
 
@@ -171,7 +189,6 @@ def buyStock(username, symbol, share):
 
 
 
-
 def sellStock(username, symbol, share):
     symbol = symbol.upper()
     profit = Stocks.objects(symbol= symbol).first().price * share
@@ -194,16 +211,53 @@ def sellStock(username, symbol, share):
 
 
 
+def getOwnedStock(username):
+    user = User.objects(username = username).first()
+    totalValue = 0
+    stocks = []
+    for i in user.ownedStock:
+        symbol = i.symbol
+        share = i.share
+        price = Stocks.objects(symbol = symbol).first().price
+        value = share * price
+        totalValue += value
+        temp = {}
+        temp['symbol'] = symbol
+        temp['price'] = price
+        temp['share'] = share
+        temp['value'] = value
+        stocks.append(temp)
+    result = {'stocks': stocks, totalValue: totalValue}
+    return result
 
 
 
 
 
+if __name__ == '__main__':
+
+    User.drop_collection()
+    LoginReturn.drop_collection()
+    Stocks.drop_collection()
+    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+    addUser('a','email','pass')
+    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+    print(getWatchList('a'))
+    
+    buyStock('a', 'aapl', 3)
+    buyStock('a', 'goog', 3)
+    buyStock('a', 'aapl', 1)
+    buyStock('a', 'amzn', 2)
+    # 4apple 3google 2amazon
+    print()
 
 
-User.drop_collection()
-LoginReturn.drop_collection()
-Stocks.drop_collection()
-print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
+
+    User.drop_collection()
+    LoginReturn.drop_collection()
+    Stocks.drop_collection()

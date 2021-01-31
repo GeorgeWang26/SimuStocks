@@ -89,10 +89,23 @@ def logout():
 
 
 
+
+
+
+
+
 @app.route('/userhome/<username>')
 def userhome(username):
     print('\n\n\n\n\n\n\n-----------------------------------------------------------------------', username, '\n\n\n\n\n\n\n\n\n')
     return render_template('homepage.html')
+
+
+@app.route('/getWatchList', methods = ['POST'])
+def getWatchList():
+    username = request.form['username']
+    # return jsonify(watchList = db.getWatchList(username))
+    return [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}]
+
 
 @app.route('/addWatchList', methods = ['POST'])
 def addWatchList():
@@ -103,11 +116,7 @@ def addWatchList():
     return jsonify(result = 'success', stock = {'price': 131.96, 'change': '-5.13 (-3.74%)', 'symbol': 'AAPL'})
 
 
-@app.route('/getWatchList', methods = ['POST'])
-def getWatchList():
-    username = request.form['username']
-    # return jsonify(watchList = db.getWatchList(username))
-    return [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}]
+
 
 @app.route('/removeWatchList', methods = ['POST'])
 def removeWatchList():
@@ -132,9 +141,14 @@ def buyStock():
 
 
 
+
+
+
 @app.route('/portfolio/<username>')
 def portfolio(username):
     return render_template('Portfolio.html')
+
+
 
 @app.route('/getOwnedStock', methods = ['POST']) 
 def getOwnedStock():
@@ -142,6 +156,8 @@ def getOwnedStock():
     result = db.getOwnedStock(username=username)
     return jsonify(result = result)
     # return jsonify(result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06 })
+
+
 
 @app.route('/sellStock', methods = ['POST'])
 def sellStock():
@@ -153,7 +169,15 @@ def sellStock():
     balence = db.getBalence(username)
     stockInfo = db.getSingleStockOwned(username, symbol)
 
-    return jsonify(result = result, balence = balence, stock = stockInfo)
+    # return jsonify(result = result, balence = balence, stock = stockInfo)
+    return jsonify(result = 'success', balence = 213.44, stock = {'symbol': 'AAPL', 'price': 131.96, 'share': 3, 'value': 395.88})
+
+
+
+
+
+
+
 
 
 

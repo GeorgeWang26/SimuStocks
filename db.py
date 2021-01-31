@@ -250,7 +250,7 @@ def getSingleStockOwned(username, symbol):
         if i.symbol == symbol:
             stock = Stocks.objects(symbol = symbol).first()
             temp = {'symbol': symbol, 'price': stock.price, 'share': i.share, 'value': (stock.price * i.share)}
-            return {'stock': temp}
+            return temp
     return 'empty'
 
 
@@ -274,6 +274,9 @@ if __name__ == '__main__':
 
     data = {'result': 'success', 'balence': 213.44, 'stock': getSingleStockOwned('a', 'aapl')}
     print(data)
+    print(data['result'])
+    print(data['balence'])
+    print(data['stock'])
 
 
 

@@ -90,7 +90,6 @@ def logout():
 
 
 @app.route('/userhome/<username>')
-# @login_required
 def userhome(username):
     print('\n\n\n\n\n\n\n-----------------------------------------------------------------------', username, '\n\n\n\n\n\n\n\n\n')
     return render_template('homepage.html')

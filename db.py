@@ -133,8 +133,6 @@ def addToWatchList(username, symbol):
     return('success')
 
 
-
-
 def removeFromWatchList(username, symbol):
     symbol = symbol.upper()
     user = User.objects(username = username).first()
@@ -236,6 +234,16 @@ def getBalence(username):
     balence = user.balence
     return balence
 
+
+def getStockInfo(symbol):
+    symbol = symbol.upper()
+    stock = Stocks.objects(symbol = symbol).first()
+    if stock:
+        return {'price': stock.price, 'change': stock.change, 'symbol': symbol}
+    return 'no stock found'
+
+
+
 if __name__ == '__main__':
 
     User.drop_collection()
@@ -254,7 +262,10 @@ if __name__ == '__main__':
     buyStock('a', 'aapl', 1)
     buyStock('a', 'amzn', 2)
     # 4apple 3google 2amazon
-    print(getBalance('a'))
+    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print(getBalence('a'))
+    print(getStockInfo('aapl'))
 
     print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
     print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')

@@ -7,3 +7,11 @@ change
 aapl
 goog
 amzn
+
+
+symbol
+price
+share
+total value 
+
+total value of portfolio

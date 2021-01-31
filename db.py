@@ -231,7 +231,7 @@ def getOwnedStock(username):
     return result
 
 
-def getBalance(username):
+def getBalence(username):
     user = User.objects(username = username).first()
     balence = user.balence
     return balence

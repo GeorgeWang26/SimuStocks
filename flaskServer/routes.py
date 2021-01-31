@@ -90,7 +90,7 @@ def logout():
 
 
 @app.route('/userhome/<username>')
-@login_required
+# @login_required
 def userhome(username):
     print('\n\n\n\n\n\n\n-----------------------------------------------------------------------', username, '\n\n\n\n\n\n\n\n\n')
     return render_template('homepage.html')
@@ -99,8 +99,8 @@ def userhome(username):
 def addWatchList():
     username = request.form['username']
     symbol = request.form['symbol']
-    result = db.addToWatchList(username, symbol)
-    return jsonify(result = result)
+    # result = db.addToWatchList(username, symbol)
+    return jsonify(result = True)
 
 
 @app.route('/getWatchList/<username>', methods = ['GET'])

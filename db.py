@@ -32,6 +32,7 @@ class User(Document):
     email = StringField()
     password = StringField()
     balence = FloatField(default = 10000.00)
+    totalStockValue = FloatField(default = 0.00)
 
     # watchList = SortedListField(EmbeddedDocumentField(WatchStock), ordering = 'symbol')
     watchList = ListField(EmbeddedDocumentField(WatchStock))
@@ -226,7 +227,7 @@ def getOwnedStock(username):
         temp['share'] = share
         temp['value'] = value
         stocks.append(temp)
-    result = {'stocks': stocks, 'totalValue': totalValue}
+    result = {'stocks': stocks, totalValue: totalValue}
     return result
 
 
@@ -250,11 +251,10 @@ if __name__ == '__main__':
     buyStock('a', 'aapl', 3)
     buyStock('a', 'goog', 3)
     buyStock('a', 'aapl', 1)
-    print(buyStock('a', 'amzn', 2))
+    buyStock('a', 'amzn', 2)
     # 4apple 3google 2amazon
-    print(getOwnedStock('a'))
-    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print()
+
 
 
 

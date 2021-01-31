@@ -103,17 +103,11 @@ def addWatchList():
     return jsonify(result = 'success', stock = {'price': 131.96, 'change': '-5.13 (-3.74%)', 'symbol': 'AAPL'})
 
 
-<<<<<<< HEAD
-@app.route('/getWatchList/<username>', methods = ['GET'])
-def getWatchList(username):
-    # return jsonify(watchList = db.getWatchList(username))
-    return jsonify(result = [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}])
-=======
 @app.route('/getWatchList', methods = ['POST'])
 def getWatchList():
     username = request.form['username']
-    return jsonify(watchList = db.getWatchList(username))
->>>>>>> 67d2f6560a28bb6076b17f0050600d82078e251b
+    # return jsonify(watchList = db.getWatchList(username))
+    return [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}]
 
 @app.route('/removeWatchList', methods = ['POST'])
 def removeWatchList():

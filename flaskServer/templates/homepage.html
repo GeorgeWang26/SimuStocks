@@ -144,17 +144,20 @@
         var newStock = $('#stockList')
         function setUp() {
             $.ajax({
-                type: 'GET',
-                url: '/getWatchList',
+                type: 'POST',
+                url: '/addWatchList',
                 data: {
                     username: window.location.pathname.split("/")[2],
                 },
                 success: function (data) {
                     console.log("ASDLKL")
-                    for (let i = 0; i < data.result.length; i++) {
+                    for (let i = 0; i < data.length; i++) {
                         x++
-                        newStock.append(' </tr> </tr> <tr> <th scope="row"></th> <td>' + data.result[i].stock.symbol + '</td> <td>' + data.result[i].stock.price + '</td> <td>' + data.result[i].stock.change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount" style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button> </td> </tr> </tr>')
+                        newStock.append(' </tr> </tr> <tr> <th scope="row"></th> <td>' + data[i].stock.symbol + '</td> <td>' + data[i].stock.price + '</td> <td>' + data[i].stock.change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount" style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button> </td> </tr> </tr>')
                     }
+                },
+                error: function(){
+                    console.log("Error has occured")
                 }
             });
         }

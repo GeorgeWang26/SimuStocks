@@ -1,87 +1,140 @@
 from mongoengine import Document, connect
 from mongoengine.document import EmbeddedDocument
-from mongoengine.fields import EmbeddedDocumentField, FloatField, SortedListField, StringField
+from mongoengine.fields import EmbeddedDocumentField, FloatField, ListField, SortedListField, StringField, EmbeddedDocumentListField
 import json
-
+from flask_login import UserMixin
 
 connect('test')
 
-class Stock(EmbeddedDocument):
-    symbol = StringField(required = True)
-    name = StringField(required = True)
-    price = FloatField(required = True)
-    delta = StringField(required = True)
+class Stocks(Document):
+    symbol = StringField()
+    name = StringField()
+    price = FloatField()
+    change = StringField()
 
 
 class OwnedStock(EmbeddedDocument):
-    symbol = StringField(required = True)
-    stock = EmbeddedDocumentField(Stock, required = True)
-    shareCount = FloatField(required = True)
-    value = FloatField(required = True)
+    symbol = StringField()
+    shareCount = FloatField()
+
+class WatchStock(EmbeddedDocument):
+    symbol = StringField()
 
 
 class User(Document):
-    username = StringField(required = True, unique = True)
-    email = StringField(required = True, unique = True)
-    password = StringField(required = True)
-    watchList = SortedListField(EmbeddedDocumentField(Stock), ordering = 'symbol')
+    username = StringField()
+    email = StringField()
+    password = StringField()
     balence = FloatField(default = 10000.00)
-    ownedStock = SortedListField(EmbeddedDocumentField(OwnedStock), ordering = 'symbol')
     totalStockValue = FloatField(default = 0.00)
+
+
+    # watchList = SortedListField(EmbeddedDocumentField(WatchStock), ordering = 'symbol')
+    watchList = ListField(EmbeddedDocumentField(WatchStock))
+    # ownedStock = EmbeddedDocumentListField(EmbeddedDocumentField(OwnedStock))
     meta = {
         'ordering': ['+username']
     }
 
-class StockInfo(Document):
-    allStocks = SortedListField(EmbeddedDocumentField(Stock), ordering = 'name')
+class LoginReturn(Document, UserMixin):
+    username = StringField()
 
 
-def newUser(username, email, password):
+
+
+def addUser(username, email, password):
     if User.objects(username = username):
         return  'username already exist'
     if User.objects(email = email):
         return 'email address already used'
-    user = User(username = username, email = email, password = password)
-    # apple = newStock(apple)
-    # use the scrape to get info by name
-    # then store the info into watchlist
-    # defualt watclist: apple, google, amazon.........
-    user.save()
+    
+    User(username = username, email = email, password = password).save()
+    LoginReturn(username = username).save()
+
     return 'success'
 
-def newStock(symbol, name, price, delta):
-    if len(StockInfo.objects()) > 0:
-        stockCollector = StockInfo.objects().first()
-        print(stockCollector)
-        allStocks = stockCollector.allStocks
-        for stock in allStocks:
-            if symbol == stock.symbol:
-                return 'stock info already exist in db'
-        print('adding new stock')
-        stock = Stock(symbol = symbol, name = name, price = price, delta = delta)
-        allStocks.append(stock)
-        StockInfo.objects().first().save()
-        print('new stock addede')
+
+def authenticate(username, password):
+    if '@' in username:
+        user = User.objects(email = username).first()
     else:
-        print('first time adding stock, creating new stock list')
-        newStockList = StockInfo()
-        stock = Stock(symbol = symbol, name = name, price = price, delta = delta)
-        newStockList.allStocks.append(stock)
-        newStockList.save()
-        print('first stock added in the liust')
+        user = User.objects(username = username).first()
+
+    if user:
+        if user.password == password:
+            return LoginReturn.objects(username = user.username).first()
+        return 'wrong password'
+
+    return 'no such user'
+
+
+def getFromId(user_id):
+    user = LoginReturn.objects(id=user_id).first()
+    if not user:
+        return 'no such user id'
+    return user
+
+
+
+def newStock(symbol, name, price, change):
+    if Stocks.objects(symbol = symbol).first():
+        return 'stock already exist'
+    Stocks(symbol = symbol, name = name, price = price, change = change).save()
+    return 'success'
+
+
+
+def updateAllStockInfo():
+    stocks = Stocks.objects()
+    for stock in stocks:
+        #use scrape to update info
+        stock.price = (stock.price + 1)  #(new price)
+        stock.change = 'updated change' #(new change)
+        stock.save()
     return('success')
-        
-print(newStock('APL', 'Apple', 2.333, 'delta is here'))
-# newUser('a', 'a.casda', 'asd')
-print(json.dumps(json.loads(StockInfo.objects().to_json()), sort_keys=True, indent=4))
-
-#def updateStockInfo()
-
-# print('hi')
-# print(StockInfo.objects())
-# allStocks = StockInfo.objects().first().allStocks()
-# print(allStocks)
-# print('hi again')
 
 
+
+def addToWatchList(username, symbol):
+    user = User.objects(username = username).first()
+    watchList = user.watchList
+    for stock in watchList:
+        if stock.symbol == symbol:
+            return 'stock already watched'
+    newStock = WatchStock(symbol = symbol)
+    user.watchList.append(newStock)
+    user.save()
+    return('success')
+
+User.drop_collection()
+LoginReturn.drop_collection()
+Stocks.drop_collection()
+print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+
+newStock('apl', 'Apple', 1, 'change is here')
+newStock('gll', 'Google', 1, 'change is here')
+print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+
+# print(addUser('b', 'b-email', 'pass'))
+# print(addToWatchList('b','2'))
+# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+# print(addToWatchList('b', '1'))
+# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+print(updateAllStockInfo())
+
+# addUser('a', 'a-email', 'pass')
+# addToWatchList('a', 'gll')
+# addToWatchList('a','apl')
+
+print('price changed\n\n', json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4))
+
+
+# User.drop_collection()
+# LoginReturn.drop_collection()
+# Stocks.drop_collection()
 

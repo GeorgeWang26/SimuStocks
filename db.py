@@ -267,18 +267,18 @@ if __name__ == '__main__':
 
     print(getWatchList('a'))
     
-    buyStock('a', 'aapl', 3)
-    buyStock('a', 'goog', 3)
-    buyStock('a', 'aapl', 1)
-    buyStock('a', 'amzn', 2)
-    # 4apple 3google 2amazon
-    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    print(getBalence('a'))
-    print(getStockInfo('aapl'))
+    # buyStock('a', 'aapl', 3)
+    # buyStock('a', 'goog', 3)
+    # buyStock('a', 'aapl', 1)
+    # buyStock('a', 'amzn', 2)
+    # # 4apple 3google 2amazon
+    # print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # # print(getBalence('a'))
+    # # print(getStockInfo('aapl'))
 
-    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
 
     User.drop_collection()

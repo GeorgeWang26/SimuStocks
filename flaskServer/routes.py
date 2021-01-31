@@ -138,7 +138,9 @@ def portfolio(username):
 @app.route('/getOwnedStock', methods = ['POST']) 
 def getOwnedStock():
     username = request.form['username']
-    return jsonify(result = db.getOwnedStock(username=username))
+    result = db.getOwnedStock(username=username)
+    return jsonify(result = result)
+    # return jsonify(result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06 })
 
 @app.route('/sellStock', methods = ['POST'])
 def sellStock():

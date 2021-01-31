@@ -7,6 +7,8 @@ import Controller as scrape
 
 
 
+bigNames = ['aapl','goog','amzn']
+
 
 connect('test')
 
@@ -50,9 +52,11 @@ def addUser(username, email, password):
         return  'username already exist'
     if User.objects(email = email):
         return 'email address already used'
-    
     User(username = username, email = email, password = password).save()
     LoginReturn(username = username).save()
+
+    for i in bigNames:
+        addToWatchList(username, i)
 
     return 'success'
 
@@ -207,3 +211,10 @@ Stocks.drop_collection()
 print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
+addUser('a','email','pass')
+print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+User.drop_collection()
+LoginReturn.drop_collection()
+Stocks.drop_collection()

@@ -1,22 +1,9 @@
-stock
-    name
-    symbol
-    current price
-    change from yesterday
+symbol
+price
+change
 
 
-ownedstock
-    stock
-    amount
-    value
 
-
-user
-    name
-    email
-    password
-    balence
-    total stock value
-    ownedstock [ownedstock]
-    watchlist [stock]
-
+aapl
+goog
+amzn

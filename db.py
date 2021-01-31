@@ -10,7 +10,7 @@ import Controller as scrape
 bigNames = ['aapl','goog','amzn']
 
 
-connect('test')
+connect('StockSimulator')
 
 class Stocks(Document):
     symbol = StringField()
@@ -276,6 +276,6 @@ if __name__ == '__main__':
 
     print(getOwnedStock(username='a'))
 
-    # User.drop_collection()
-    # LoginReturn.drop_collection()
-    # Stocks.drop_collection()
+    User.drop_collection()
+    LoginReturn.drop_collection()
+    Stocks.drop_collection()

@@ -98,14 +98,15 @@ def userhome(username):
 def addWatchList():
     username = request.form['username']
     symbol = request.form['symbol']
-    result = db.addToWatchList(username, symbol)
-    stockStats = db.getStockInfo(symbol)
-    return jsonify(result = result, stock = stockStats)
+    # result = db.addToWatchList(username, symbol)
+    # stockStats = db.getStockInfo(symbol)
+    return jsonify(result = 'success', stock = {'price': 131.96, 'change': '-5.13 (-3.74%)', 'symbol': 'AAPL'})
 
 
 @app.route('/getWatchList/<username>', methods = ['GET'])
 def getWatchList(username):
-    return jsonify(watchList = db.getWatchList(username))
+    # return jsonify(watchList = db.getWatchList(username))
+    return jsonify(result = [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}])
 
 @app.route('/removeWatchList', methods = ['POST'])
 def removeWatchList():

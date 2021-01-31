@@ -78,8 +78,7 @@
                     if (data.result == "success") {
                         window.location.pathname = "/userhome";
                     } else {
-                        console.log('error', data.result)
-                        // pop up window here with display message: <data.result>
+                        alert('error', data.result)
                     }
                 },
                 error: function () {

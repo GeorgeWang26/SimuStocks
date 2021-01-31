@@ -96,24 +96,29 @@ def logout():
 
 @app.route('/userhome/<username>')
 def userhome(username):
-    print('\n\n\n\n\n\n\n-----------------------------------------------------------------------', username, '\n\n\n\n\n\n\n\n\n')
+    print('\n\n\n\n\n\n\n-----------------------------------------------------------------------\n', username, '\n\n\n\n\n\n\n\n\n')
     return render_template('homepage.html')
 
 
 @app.route('/getWatchList', methods = ['POST'])
 def getWatchList():
+    db.updateAllStockInfo()
     username = request.form['username']
-    # return jsonify(watchList = db.getWatchList(username))
-    return [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}]
+    print('\n\n\n\n\n\n\n-----------------------------------------------------------------------\n', username, '\n\n\n\n\n\n\n\n\n')
+    watchList = db.getWatchList(username)
+    print('\n\n\n\n\n\n\n-----------------------------------------------------------------------\n', watchList, '\n\n\n\n\n\n\n\n\n')
+    return jsonify(result = watchList)
+    # return [{'symbol': 'AAPL', 'price': 131.96, 'change': '-5.13 (-3.74%)'}, {'symbol': 'GOOG', 'price': 1835.74, 'change': '-27.37 (-1.47%)'}, {'symbol': 'AMZN', 'price': 3206.2, 'change': '-31.42 (-0.97%)'}]
 
 
 @app.route('/addWatchList', methods = ['POST'])
 def addWatchList():
     username = request.form['username']
     symbol = request.form['symbol']
-    # result = db.addToWatchList(username, symbol)
-    # stockStats = db.getStockInfo(symbol)
-    return jsonify(result = 'success', stock = {'price': 131.96, 'change': '-5.13 (-3.74%)', 'symbol': 'AAPL'})
+    result = db.addToWatchList(username, symbol)
+    stockStats = db.getStockInfo(symbol)
+    return jsonify(result = result, stockStats = stockStats)
+    # return jsonify(result = 'success', stock = {'price': 131.96, 'change': '-5.13 (-3.74%)', 'symbol': 'AAPL'})
 
 
 
@@ -130,11 +135,18 @@ def removeWatchList():
 def buyStock():
     username = request.form['username']
     symbol = request.form['symbol']
-    share = request.form['share']
+    share = int(request.form['share'])
     result = db.buyStock(username, symbol, share)
     balence = db.getBalence(username)
-    # return jsonify(result = result, balence = balence)
-    return jsonify(result = 'success', balence = 23.99)
+    return jsonify(result = result, balence = balence)
+    # return jsonify(result = 'success', balence = 23.99)
+
+
+
+
+
+
+
 
 @app.route('/refreshWatchList', methods = ['POST'])
 def refreshWatchList():
@@ -148,18 +160,22 @@ def refreshWatchList():
 
 
 
-
-
 @app.route('/portfolio/<username>')
 def portfolio(username):
     return render_template('Portfolio.html')
+
+# @app.route('/portfolio')
+# def portfolioRedirect():
+#     redirect('/portfolio'+current_user.username)
 
 
 
 @app.route('/getOwnedStock', methods = ['POST']) 
 def getOwnedStock():
+    db.updateAllStockInfo()
     username = request.form['username']
     result = db.getOwnedStock(username=username)
+    print('\n\n\n\n\n\n\n\n\n\n\n----------------------------------------------------------\n', username, result, '\n-----------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
     return jsonify(result = result)
     # return jsonify(result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06, 'balence': 213.99 })
 
@@ -169,17 +185,17 @@ def getOwnedStock():
 def sellStock():
     username = request.form['username']
     symbol = request.form['symbol']
-    share = request.form['share']
-
-    result = db.buyStock(username, symbol, share)
+    share = int(request.form['share'])
+    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\----------------------------------------------------------\n', username, symbol, share, '\n-----------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+    print(type(share))
+    result = db.sellStock(username, symbol, share)
+    print('\n\n\n\n\n\n\n\n\n\n\n\n\n----------------------------------------------------------\n', 'result done', '\n-----------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
     balence = db.getBalence(username)
     stockInfo = db.getSingleStockOwned(username, symbol)
+    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\----------------------------------------------------------\n', result, balence, stockInfo, '\n-----------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n')
 
-    # return jsonify(result = result, balence = balence, stock = stockInfo)
-    return jsonify(result = 'success', balence = 213.44, stock = {'symbol': 'AAPL', 'price': 131.96, 'share': 3, 'value': 395.88})
-
-
-
+    return jsonify(result = result, balence = balence, stock = stockInfo)
+    # return jsonify(result = 'success', balence = 213.44, stock = {'symbol': 'AAPL', 'price': 131.96, 'share': 3, 'value': 395.88})
 
 
 
@@ -187,6 +203,10 @@ def sellStock():
 
 
 
-@app.route('/balence/<username>', methods = ['POST'])
-def balence(username):
+
+
+
+@app.route('/balence', methods = ['POST'])
+def balence():
+    username = request.form['username']
     return jsonify(result = db.getBalence(username))

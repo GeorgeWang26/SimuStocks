@@ -119,7 +119,7 @@ def updateAllStockInfo():
 def addToWatchList(username, symbol):
     symbol = symbol.upper()
     if not Stocks.objects(symbol = symbol).first():
-        print('add new stock from addingtowatchlist')
+        print('add new stock from addingtowatchlist   ', symbol)
         print(newStock(symbol = symbol))
         
     user = User.objects(username = username).first()
@@ -262,37 +262,20 @@ if __name__ == '__main__':
     print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
     print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
-    addUser('a','email','pass')
-
-
-    # print(getWatchList('a'))
+    addUser('a','email','password')
     
     buyStock('a', 'aapl', 3)
-    # print(getSingleStockOwned('a', 'aapl'))
+    buyStock('a', 'goog', 3)
+    buyStock('a', 'aapl', 1)
 
+    print('\n\n\n\n----------------------------------------------------------------------------------')
+    addToWatchList('a', 'tsla')
+    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
+    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
-    data = {'result': 'success', 'balence': 213.44, 'stock': getSingleStockOwned('a', 'aapl')}
-    print(data)
-    print(data['result'])
-    print(data['balence'])
-    print(data['stock'])
+    print(getOwnedStock(username='a'))
 
-    print(updateAllStockInfo())
-
-    # buyStock('a', 'goog', 3)
-    # buyStock('a', 'aapl', 1)
-    # buyStock('a', 'amzn', 2)
-    # # 4apple 3google 2amazon
-    # print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    # print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    # # print(getBalence('a'))
-    # # print(getStockInfo('aapl'))
-
-    # print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    # print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-
-
-    User.drop_collection()
-    LoginReturn.drop_collection()
-    Stocks.drop_collection()
+    # User.drop_collection()
+    # LoginReturn.drop_collection()
+    # Stocks.drop_collection()

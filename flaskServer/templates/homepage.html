@@ -15,12 +15,13 @@
 <body onload="setUp()">
 
     <img src="/static/stocklogo.png" width="30%" style="margin-top:1%">
-
+    <h3 id ="balence" style="text-align:left; margin-top:2%; margin-left:5%">Balance: </h3>
     <!-- button to bring user to the stock list page -- (will bring them to another page to choose stocks) -->
     <div id="button" style="text-align:right;">
         <button id="AddButton" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#stockpop"
             style="margin-top:5%; margin-right:2%">Add Stock</button>
-        <a href="portfolio.html" class="btn btn-outline-primary" style="margin-top:5%; margin-right:2%">Portfolio</a>
+
+        <button type = "button" onClick="redirectPortfolio()" class="btn btn-outline-primary" style="margin-top:5%; margin-right:2%">Portfolio</button>
     </div>
 
     <!--pop-up for the user to choose the stock-->
@@ -66,81 +67,17 @@
             </tr>
         </thead>
         <tbody id="stockList">
-
-            <!--one row of the table-->
-            <tr>
-                <th scope="row"></th>
-                <td>APPL</td>
-                <td>##</td>
-                <td>%%</td>
-                <td>
-                    <div class="form-group">
-                        <!--                                <label for="stockAmount">Amount</label>-->
-                        <input type="number" class="form-control" id="stockAmount" style="width:40%">
-                    </div>
-                </td>
-                <td style="text-align:left;">
-                    <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button>
-                </td>
-
-            </tr>
-
-            <tr class="clickable" data-toggle="collapse" id="stock2" data-target=".stock2">
-                <th scope="row"></th>
-                <td>Amazon</td>
-                <td>##</td>
-                <td>%%</td>
-                <td>
-                    <div class="form-group">
-                        <!--                                <label for="stockAmount">Amount</label>-->
-                        <input type="number" class="form-control" id="stockAmount" style="width:40%">
-                    </div>
-                </td>
-                <td style="text-align:left;">
-                    <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button>
-                </td>
-
-            </tr>
-            </tr>
-            <tr>
-                <th scope="row"></th>
-                <td>S&P 500</td>
-                <td>##</td>
-                <td>%%</td>
-                <td>
-                    <div class="form-group">
-                        <!--                                <label for="stockAmount">Amount</label>-->
-                        <input type="number" class="form-control" id="stockAmount" style="width:40%">
-                    </div>
-                </td>
-                <td style="text-align:left;">
-                    <button id="buyButton" type="button" class="btn btn-outline-primary" style="width:50%">Buy</button>
-                </td>
-
-            </tr>
-            </tr>
-
-
-
+            <!-- TABLE -->
         </tbody>
 
 
     </table>
 
-
-    <!--    <script>-->
-    <!--        document.getElementById('testbutton').onclick = function() {-->
-    <!--            alert("button was clicked");-->
-    <!--            var i=4;-->
-    <!--            var div=document.createElement('div');-->
-
-    <!--        };-->
-
-    <!--    </script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
         var x = 0;
+        var stocks = [];
         var newStock = $('#stockList')
         function setUp() {
             $.ajax({
@@ -150,21 +87,36 @@
                     username: window.location.pathname.split("/")[2],
                 },
                 success: function (data) {
-                    console.log("ASDLKL")
-                    for (let i = 0; i < data.length; i++) {
+                    console.log(data)
+                    for (let i = 0; i < data.result.length; i++) {
+
+                        newStock.append('<tr id="d' + (x * -1) + '"> <th scope="row"></th> <td>' + data.result[i].symbol + '</td> <td>' + data.result[i].price + '</td> <td>' + data.result[i].change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount' + x + '"style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" id="' + x + '" class="btn btn-outline-primary" style="width:50%" onclick="buy(this.id)">Buy</button> <button type="button" id="' + x * 10 + '" class="btn btn-primary" style="width:25%; background-color: #f44336;" onclick="del(this.id)">Del</button> </td> </tr> </tr>')
+                        stocks.push(data.result[i].symbol)
                         x++
-                        newStock.append(' </tr> </tr> <tr> <th scope="row"></th> <td>' + data[i].stock.symbol + '</td> <td>' + data[i].stock.price + '</td> <td>' + data[i].stock.change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount" style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button> </td> </tr> </tr>')
                     }
                 },
-                error: function(){
-                    console.log("Error has occured")
+                error: function () {
+                    console.log("Error has occured get watch list")
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '/balence',
+                data: {
+                    username: window.location.pathname.split("/")[2],
+                },
+                success: function (data) {
+                    document.getElementById('balence').innerHTML = "Balance: " + data.result.toFixed(2)
+                },
+                error: function () {
+                    console.log("Error has occured ballence")
                 }
             });
         }
 
         document.getElementById('testbutton').onclick = function () {
-            x++
-            
+
+
             $.ajax({
                 type: 'POST',
                 url: '/addWatchList',
@@ -175,47 +127,106 @@
                 success: function (data) {
                     console.log(data.result)
                     if (data.result == 'success') {
-                        newStock.append(' </tr> </tr> <tr> <th scope="row"></th> <td>' + data.stock.symbol + '</td> <td>' + data.stock.price + '</td> <td>' + data.stock.change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount" style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button> </td> </tr> </tr>')
+                        // newStock.append('<tr id="d' + (x * -1) + '"> <th scope="row"></th> <td>' + data.stock.symbol + '</td> <td>' + data.stock.price + '</td> <td>' + data.stock.change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount' + x + '"style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" id="' + x + '" class="btn btn-outline-primary" style="width:50%" onclick="buy(this.id)">Buy</button> <button type="button" id="' + x * 10 + '" class="btn btn-primary" style="width:25%; background-color: #f44336;" onclick="del(this.id)">Del</button> </td> </tr> </tr>')
+                        // stocks.push(data.stock.symbol)
+                        // x++
+                        update();
                     } else {
                         alert(data.result)
                     }
                 }
             });
+
         }
 
-        document.getElementById('buyButton').onclick = function () {
-            var newStock = $('#stockList')
+
+        function buy(id) {
+            var shares = document.getElementById(('stockAmount' + id)).value
+            var sym = stocks[parseInt(id)]
             $.ajax({
                 type: 'POST',
-                url: '/addWatchList',
+                url: '/buyStock',
                 data: {
                     username: window.location.pathname.split("/")[2],
-                    symbol: searching.value
+                    symbol: sym,
+                    share: shares
                 },
                 success: function (data) {
-                    console.log(data.result)
-                    if (data.result == 'success') {
-                        newStock.append(' </tr> </tr> <tr> <th scope="row"></th> <td>' + data.stock.symbol + '</td> <td>' + data.stock.price + '</td> <td>' + data.stock.change + '</td> <td> <div class="form-group"> <!-- <label for="stockAmount">Amount</label>--> <input type="number" class="form-control" id="stockAmount" style="width:40%"> </div> </td> <td style="text-align:left;"> <button type="button" class="btn btn-outline-primary" style="width:50%">Buy</button> </td> </tr> </tr>')
-                    } else {
+                    if (data.result == 'success'){
+                        alert('Successfully purchased ' + shares + " shares of " + sym)
+                        update();
+                    }else {
                         alert(data.result)
                     }
                 }
             });
-
-
         }
-    </script>
 
-    <script>
-        let colTitles = ['This is collum', 'George cringe', 'Fred cool af']
-        for (let i = 0; i < colTitles.length; i++) {
-            let a = document.createElement('div')
-            let b = document.createElement('h6')
-            b.className = "myStyles another-class class2 class3"
-            b.textContent = colTitles[i]
-            a.appendChild(b)
-            document.querySelector('.main').appendChild(a)
+        function del(id) {
+            $.ajax({
+                type: 'POST',
+                url: '/removeWatchList',
+                data: {
+                    username: window.location.pathname.split("/")[2],
+                    symbol: stocks[parseInt((id / 10))]
+                },
+                success: function () {
+                    update();
+                    console.log("SUCCESS")
+                },
+                error: function () {
+                    console.log("ERROR")
+                }
+            });
         }
+
+        function update() {
+            console.log(x)
+            for (var i = 0; i < x; i++) {
+                var myobj = document.getElementById("d" + (i * -1));
+                myobj.remove();
+            }
+            x = 0;
+            stocks = [];
+            setUp();
+        }
+
+        // setInterval(() => {
+        //     console.log('refresh')
+        //     console.log(x)
+        //     for (var i = 0; i < x; i++) {
+        //         var myobj = document.getElementById("d" + (i * -1));
+        //         myobj.remove();
+        //     }
+        //     x = 0;
+        //     stocks = [];
+        //     setUp();
+        // }, 10000);
+
+        // myLoop();
+        // var i = 1;                  //  set your counter to 1
+
+
+
+
+        // function myLoop() {         //  create a loop function
+        //     setTimeout(function () {   //  call a 3s setTimeout when the loop is called
+        //         console.log('refresh')
+        //         update()              //  your code here
+        //         // i++;                    //  increment the counter
+        //         // if (i < 10) {           //  if the counter < 10, call the loop function
+        //         //     myLoop();             //  ..  again which will trigger another 
+        //         // }                       //  ..  setTimeout()
+        //     }, 10000)
+        // }
+
+
+
+        function redirectPortfolio(){
+            window.location.pathname = "/portfolio/" + window.location.pathname.split("/")[2]
+        }
+
+
 
     </script>
 

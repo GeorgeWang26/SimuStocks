@@ -225,7 +225,7 @@ def getOwnedStock(username):
         temp['share'] = share
         temp['value'] = value
         stocks.append(temp)
-    result = {'stocks': stocks, totalValue: totalValue}
+    result = {'stocks': stocks, 'totalValue': totalValue}
     return result
 
 
@@ -242,6 +242,16 @@ def getStockInfo(symbol):
         return {'price': stock.price, 'change': stock.change, 'symbol': symbol}
     return 'no stock found'
 
+
+def getSingleStockOwned(username, symbol):
+    symbol = symbol.upper()
+    user = User.objects(username = username).first()
+    for i in user.ownedStock:
+        if i.symbol == symbol:
+            stock = Stocks.objects(symbol = symbol).first()
+            temp = {'symbo': symbol, 'price': stock.price, 'share': i.share, 'value': (stock.price * i.share)}
+            return {'stock': temp}
+    return 'empty'
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
+from werkzeug.exceptions import BadRequestKeyError
 from flaskServer import app
-from flask import render_template, request, jsonify, redirect, abort
+from flask import json, render_template, request, jsonify, redirect, abort
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 import db
 
@@ -105,3 +106,36 @@ def addWatchList():
 @app.route('/getWatchList/<username>', methods = ['GET'])
 def getWatchList(username):
     return jsonify(watchList = db.getWatchList(username))
+
+@app.route('/removeWatchList', methods = ['POST'])
+def removeWatchList():
+    username = request.form['username']
+    symbol = request.form['symbol']
+    result = db.removeFromWatchList(username, symbol)
+    return jsonify(result = result)
+
+
+@app.route('/buyStock', methods = ['POST'])
+def buyStock():
+    username = request.form['username']
+    symbol = request.form['symbol']
+    share = request.form['share']
+    result = db.buyStock(username, symbol, share)
+    return jsonify(result = result)
+
+@app.route('/portfolio/<username>')
+def portfolio(username):
+    return render_template('Portfolio.html')
+
+@app.route('/getOwnedStock', methods = ['POST']) 
+def getOwnedStock():
+    username = request.form['username']
+    return jsonify(result = db.getOwnedStock(username=username))
+
+@app.route('/sellStock', methods = ['POST'])
+def sellStock():
+    username = request.form['username']
+    symbol = request.form['symbol']
+    share = request.form['share']
+    result = db.buyStock(username, symbol, share)
+    return jsonify(result = result)

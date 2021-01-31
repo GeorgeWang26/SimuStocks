@@ -4,16 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Portfolio</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <!-- <link rel="stylesheet" href="css/bootstrap.css"> -->
+<!--    <link rel="stylesheet" href="/static/css/bootstrap.css">-->
+     <link rel="stylesheet" href="css/bootstrap.css">
 
 
 </head>
 
-<body onload="setUp()">
+<!--<body onload="setUp()">-->
+<body>
 
-    <h2 style="text-align:center; margin-top:5%">Portfolio</h2>
-    <div class="main"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-4" style="margin-top:5%;text-align:left;">
+                 <a href="#">Watchlist</a>
+
+            </div>
+            <div class="col-4" >
+                <h1 style="text-align:center; margin-top:7%">Portfolio</h1>
+
+            </div>
+            <div class="col-4" >
+                <h3 id ="balence" style="text-align:center; margin-top:11%">Balance: </h3>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="main">
+
+
+
+    </div>
     <table class="table table-responsive table-hover" style="margin-top:5%">
         <thead>
             <tr>
@@ -39,102 +63,153 @@
 
     <script>
 
-        function setUp() {
-            $.ajax({
-                type: 'POST',
-                url: '/getOwnedStock',
-                data: {
-                    username: window.location.pathname.split("/")[2],
-                },
-                success: function (data) {
-                    let result = data.result
-                    var stocks = result.stocks
-                    var totalValue = result.totalValue
+<!--        function setUp() {-->
+<!--            $.ajax({-->
+<!--                type: 'POST',-->
+<!--                url: '/getOwnedStock',-->
+<!--                data: {-->
+<!--                    username: window.location.pathname.split("/")[2],-->
+<!--                },-->
+<!--                success: function (data) {-->
+<!--                    let result = data.result-->
+<!--                    var stocks = result.stocks-->
+<!--                    var totalValue = result.totalValue-->
 
-                    for (let i = 0; i < stocks.length; i++) {
-                        symbol = stocks[i].symbol
-                        price = stocks[i].price
-                        share = stocks[i].share
-                        value = stocks[i].value
+<!--                    for (let i = 0; i < stocks.length; i++) {-->
+<!--                        symbol = stocks[i].symbol-->
+<!--                        price = stocks[i].price-->
+<!--                        share = stocks[i].share-->
+<!--                        value = stocks[i].value-->
 
-                        let a = document.createElement('tr');
-                        let x = document.createElement('th');
-                        let b = document.createElement('td');
-                        let c = document.createElement('td');
-                        let d = document.createElement('td');
-                        let e = document.createElement('td');
-                        let inputText = document.createElement('input');
-                        let sellBut = document.createElement('button');
-                        x.scope = "row";
-                        x.textContent = i + 1
-                        b.textContent = symbol;
-                        c.textContent = price;
-                        d.textContent = share;
-                        e.textContent = value;
-                        inputText.type = "number";
-                        inputText.className = "form-group ";
-                        inputText.style = "width:40%;";
-                        sellBut.class = "btn btn-outline-primary";
-                        sellBut.style = "width:30%; margin-left:10%";
-                        sellBut.textContent = "Sell";
+<!--                        let a = document.createElement('tr');-->
+<!--                        let x = document.createElement('th');-->
+<!--                        let b = document.createElement('td');-->
+<!--                        let c = document.createElement('td');-->
+<!--                        let d = document.createElement('td');-->
+<!--                        let e = document.createElement('td');-->
+<!--                        let inputText = document.createElement('input');-->
+<!--                        let sellBut = document.createElement('button');-->
+<!--                        x.scope = "row";-->
+<!--                        x.textContent = i + 1-->
+<!--                        b.textContent = symbol;-->
+<!--                        c.textContent = price;-->
+<!--                        d.textContent = share;-->
+<!--                        e.textContent = value;-->
+<!--                        inputText.type = "number";-->
+<!--                        inputText.className = "form-group ";-->
+<!--                        inputText.style = "width:40%;";-->
+<!--                        sellBut.class = "btn btn-outline-primary";-->
+<!--                        sellBut.style = "width:30%; margin-left:10%";-->
+<!--                        sellBut.textContent = "Sell";-->
 
-                        a.appendChild(x);
-                        a.appendChild(b);
-                        a.appendChild(c);
-                        a.appendChild(d);
-                        a.appendChild(e);
-                        a.appendChild(inputText);
-                        a.appendChild(sellBut);
+<!--                        a.appendChild(x);-->
+<!--                        a.appendChild(b);-->
+<!--                        a.appendChild(c);-->
+<!--                        a.appendChild(d);-->
+<!--                        a.appendChild(e);-->
+<!--                        a.appendChild(inputText);-->
+<!--                        a.appendChild(sellBut);-->
 
-                        document.querySelector('.table').appendChild(a);
+<!--                        document.querySelector('.table').appendChild(a);-->
+<!--                    }-->
+<!--                }-->
+<!--            })-->
+<!--        }-->
+
+         var count = 0;
+
+         var result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06, "balence":2342 }
+
+
+         document.querySelector("#balence").textContent=document.querySelector("#balence").textContent.split(" ")[0]+ " "+ result.balence;
+
+         var stocks = result.stocks
+         var totalValue = result.totalValue
+
+         for (let i = 0; i < stocks.length; i++) {
+             symbol = stocks[i].symbol
+             price = stocks[i].price
+             share = stocks[i].share
+             value = stocks[i].value
+
+             let a = document.createElement('tr');
+             a.id = "row" +count;
+             let x = document.createElement('th');
+             let symbolb = document.createElement('td');
+             symbolb.id = "symbol"+count;
+             let pricec = document.createElement('td');
+             pricec.id = "price" + count;
+             let shared = document.createElement('td');
+             shared.id = "share" + count;
+             let valuee = document.createElement('td');
+             valuee.id = "value" + count;
+             let inputText = document.createElement('input');
+             inputText.id  = "inputText" + count;
+             let sellBut = document.createElement('button');
+             sellBut.id  = "sellBut" + count;
+             x.scope = "row";
+             x.textContent = " "
+             symbolb.textContent = symbol;
+             pricec.textContent = price;
+             shared.textContent = share;
+             valuee.textContent = value;
+             inputText.type = "number";
+             inputText.className = "form-group ";
+             inputText.style = "width:40%;";
+             sellBut.class = "btn btn-outline-primary";
+             sellBut.style = "width:30%; margin-left:10%";
+             sellBut.textContent = "Sell";
+
+             a.appendChild(x);
+             a.appendChild(symbolb);
+             a.appendChild(pricec);
+             a.appendChild(shared);
+             a.appendChild(valuee);
+             a.appendChild(inputText);
+             a.appendChild(sellBut);
+
+
+             document.querySelector('.table').appendChild(a);
+
+             document.getElementById('sellBut' + count).onclick = function() {
+                id = sellBut.id.split("t")[1]
+                alert("button was clicked" + id);
+
+                let data = {'result': 'success', 'balance': 213.44, 'stock': {'symbol': 'AAPL', 'price': 1000.00, 'share': 1, 'value': 100.00}}
+                 if (data.result=="success"){
+                    let stock = data.stock;
+                    if (stock.share == 0){
+                        document.querySelector('.table').popChild("row"+id);
                     }
-                }
-            })
-        }
+                    else{
+                        console.log("price" + id)
+                        let oldValue = parseFloat(document.querySelector("#value" + id).textContent);
+                        console.log(oldValue)
+                        let currentBalance = parseFloat(document.querySelector("#balence").textContent.split(" ")[1])
+                        console.log(currentBalance)
+                        document.querySelector("#balence").textContent=document.querySelector("#balence").textContent.split(" ")[0]+ " "+ (currentBalance + oldValue - stock.value).toFixed(2);
+
+                        document.querySelector("#price" + id).textContent=stock.price;
+                        document.querySelector("#share" + id).textContent=stock.share;
+                        document.querySelector("#value" + id).textContent=stock.value;
+
+                    }
+
+                 }
+                 else{
+                    alert(data.result)
+                 }
 
 
-        // var result = { 'stocks': [{ 'symbol': 'AAPL', 'price': 131.96, 'share': 4, 'value': 527.84 }, { 'symbol': 'GOOG', 'price': 1835.74, 'share': 3, 'value': 5507.22 }], 'totalValue': 6035.06 }
+             }
 
-        // var stocks = result.stocks
-        // var totalValue = result.totalValue
+                 count++;
 
-        // for (let i = 0; i < stocks.length; i++) {
-        //     symbol = stocks[i].symbol
-        //     price = stocks[i].price
-        //     share = stocks[i].share
-        //     value = stocks[i].value
+             };
 
-        //     let a = document.createElement('tr');
-        //     let x = document.createElement('th');
-        //     let b = document.createElement('td');
-        //     let c = document.createElement('td');
-        //     let d = document.createElement('td');
-        //     let e = document.createElement('td');
-        //     let inputText = document.createElement('input');
-        //     let sellBut = document.createElement('button');
-        //     x.scope = "row";
-        //     x.textContent = i + 1
-        //     b.textContent = symbol;
-        //     c.textContent = price;
-        //     d.textContent = share;
-        //     e.textContent = value;
-        //     inputText.type = "number";
-        //     inputText.className = "form-group ";
-        //     inputText.style = "width:40%;";
-        //     sellBut.class = "btn btn-outline-primary";
-        //     sellBut.style = "width:30%; margin-left:10%";
-        //     sellBut.textContent = "Sell";
 
-        //     a.appendChild(x);
-        //     a.appendChild(b);
-        //     a.appendChild(c);
-        //     a.appendChild(d);
-        //     a.appendChild(e);
-        //     a.appendChild(inputText);
-        //     a.appendChild(sellBut);
 
-        //     document.querySelector('.table').appendChild(a);
-        // };
+
 
 
     </script>

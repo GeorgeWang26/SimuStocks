@@ -231,8 +231,10 @@ def getOwnedStock(username):
     return result
 
 
-
-
+def getBalance(username):
+    user = User.objects(username = username).first()
+    balence = user.balence
+    return balence
 
 if __name__ == '__main__':
 
@@ -243,8 +245,7 @@ if __name__ == '__main__':
     print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
     addUser('a','email','pass')
-    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
 
     print(getWatchList('a'))
     
@@ -253,9 +254,10 @@ if __name__ == '__main__':
     buyStock('a', 'aapl', 1)
     buyStock('a', 'amzn', 2)
     # 4apple 3google 2amazon
-    print()
+    print(getBalance('a'))
 
-
+    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
 
     User.drop_collection()

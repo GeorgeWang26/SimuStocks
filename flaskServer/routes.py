@@ -121,7 +121,14 @@ def buyStock():
     symbol = request.form['symbol']
     share = request.form['share']
     result = db.buyStock(username, symbol, share)
-    return jsonify(result = result)
+    balence = db.getBalance(username)
+    return jsonify(result = result, balence = balence)
+
+
+
+
+
+
 
 @app.route('/portfolio/<username>')
 def portfolio(username):
@@ -130,7 +137,7 @@ def portfolio(username):
 @app.route('/getOwnedStock', methods = ['POST']) 
 def getOwnedStock():
     username = request.form['username']
-    return jsonify(result = db.getOwnedStock(username=username))
+    return jsonify(result = db.getOwnedStock(username=username), balence = db.getBalance(username))
 
 @app.route('/sellStock', methods = ['POST'])
 def sellStock():

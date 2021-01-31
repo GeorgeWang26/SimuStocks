@@ -8,5 +8,7 @@ print('@' in s)
 
 num = 1
 num+=1
-print(num)
+print(num,'\n')
 
+for i in range(5):
+    print(i)

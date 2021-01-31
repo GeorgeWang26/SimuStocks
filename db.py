@@ -42,7 +42,7 @@ class LoginReturn(Document, UserMixin):
 
 
 
-def addUser(username, email, password):
+def newUser(username, email, password):
     if User.objects(username = username):
         return  'username already exist'
     if User.objects(email = email):
@@ -106,35 +106,28 @@ def addToWatchList(username, symbol):
     user.save()
     return('success')
 
+def removeFromWatchList(username, symbol):
+    user = User.objects(username = username).first()
+    for i in range(len(user.watchList)):
+        if user.watchList[i].symbol == symbol:
+            user.watchList.pop(i)
+            user.save()
+            return('success')
+    return ('stock not found')
+
+
+
 User.drop_collection()
 LoginReturn.drop_collection()
 Stocks.drop_collection()
 print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
-
-newStock('apl', 'Apple', 1, 'change is here')
-newStock('gll', 'Google', 1, 'change is here')
-print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-
-
-# print(addUser('b', 'b-email', 'pass'))
-# print(addToWatchList('b','2'))
-# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-# print(addToWatchList('b', '1'))
-# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-
-print(updateAllStockInfo())
-
-# addUser('a', 'a-email', 'pass')
-# addToWatchList('a', 'gll')
-# addToWatchList('a','apl')
-
-print('price changed\n\n', json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4))
-
-
-# User.drop_collection()
-# LoginReturn.drop_collection()
-# Stocks.drop_collection()
+newUser('a', 'email', 'pass')
+addToWatchList('a','apl')
+addToWatchList('a','gll')
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+print(removeFromWatchList('a', 'apl'))
+print(removeFromWatchList('a', 'asdsad'))
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 

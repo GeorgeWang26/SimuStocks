@@ -103,8 +103,9 @@ def addWatchList():
     return jsonify(result = result, stock = stockStats)
 
 
-@app.route('/getWatchList/<username>', methods = ['GET'])
-def getWatchList(username):
+@app.route('/getWatchList', methods = ['POST'])
+def getWatchList():
+    username = request.form['username']
     return jsonify(watchList = db.getWatchList(username))
 
 @app.route('/removeWatchList', methods = ['POST'])

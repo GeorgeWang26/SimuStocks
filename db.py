@@ -249,7 +249,7 @@ def getSingleStockOwned(username, symbol):
     for i in user.ownedStock:
         if i.symbol == symbol:
             stock = Stocks.objects(symbol = symbol).first()
-            temp = {'symbo': symbol, 'price': stock.price, 'share': i.share, 'value': (stock.price * i.share)}
+            temp = {'symbol': symbol, 'price': stock.price, 'share': i.share, 'value': (stock.price * i.share)}
             return {'stock': temp}
     return 'empty'
 
@@ -265,9 +265,18 @@ if __name__ == '__main__':
     addUser('a','email','pass')
 
 
-    print(getWatchList('a'))
+    # print(getWatchList('a'))
     
-    # buyStock('a', 'aapl', 3)
+    buyStock('a', 'aapl', 3)
+    # print(getSingleStockOwned('a', 'aapl'))
+
+
+
+    data = {'result': 'success', 'balence': 213.44, 'stock': getSingleStockOwned('a', 'aapl')}
+    print(data)
+
+
+
     # buyStock('a', 'goog', 3)
     # buyStock('a', 'aapl', 1)
     # buyStock('a', 'amzn', 2)

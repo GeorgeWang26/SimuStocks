@@ -1,6 +1,6 @@
 from mongoengine import Document, connect
 from mongoengine.document import EmbeddedDocument
-from mongoengine.fields import EmbeddedDocumentField, FloatField, ListField, SortedListField, StringField, EmbeddedDocumentListField
+from mongoengine.fields import EmbeddedDocumentField, FloatField, IntField, ListField, SortedListField, StringField
 import json
 from flask_login import UserMixin
 
@@ -15,7 +15,7 @@ class Stocks(Document):
 
 class OwnedStock(EmbeddedDocument):
     symbol = StringField()
-    shareCount = FloatField()
+    share = IntField()
 
 class WatchStock(EmbeddedDocument):
     symbol = StringField()
@@ -28,10 +28,9 @@ class User(Document):
     balence = FloatField(default = 10000.00)
     totalStockValue = FloatField(default = 0.00)
 
-
     # watchList = SortedListField(EmbeddedDocumentField(WatchStock), ordering = 'symbol')
     watchList = ListField(EmbeddedDocumentField(WatchStock))
-    # ownedStock = EmbeddedDocumentListField(EmbeddedDocumentField(OwnedStock))
+    ownedStock = ListField(EmbeddedDocumentField(OwnedStock))
     meta = {
         'ordering': ['+username']
     }
@@ -42,7 +41,7 @@ class LoginReturn(Document, UserMixin):
 
 
 
-def newUser(username, email, password):
+def addUser(username, email, password):
     if User.objects(username = username):
         return  'username already exist'
     if User.objects(email = email):
@@ -76,6 +75,11 @@ def getFromId(user_id):
 
 
 
+# def addNewStock(symbol):
+#     #use scraper
+#     newStock()
+
+
 def newStock(symbol, name, price, change):
     if Stocks.objects(symbol = symbol).first():
         return 'stock already exist'
@@ -96,15 +100,28 @@ def updateAllStockInfo():
 
 
 def addToWatchList(username, symbol):
+
+# add this in !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    # if not Stocks.objects(symbol = symbol).first():
+    #     addNewStock()
+
     user = User.objects(username = username).first()
     watchList = user.watchList
     for stock in watchList:
         if stock.symbol == symbol:
             return 'stock already watched'
-    newStock = WatchStock(symbol = symbol)
-    user.watchList.append(newStock)
+    newStockWatched = WatchStock(symbol = symbol)
+    user.watchList.append(newStockWatched)
     user.save()
     return('success')
+
+
+
+
+
+
+
 
 def removeFromWatchList(username, symbol):
     user = User.objects(username = username).first()
@@ -117,17 +134,96 @@ def removeFromWatchList(username, symbol):
 
 
 
+def buyStock(username, symbol, share):
+    cost = Stocks.objects(symbol = symbol).first().price * share
+    user = User.objects(username = username).first()
+
+    if cost > user.balence:
+        return 'dont have enough balence'
+    else:
+        user.balence -= cost
+
+    for stock in user.ownedStock:
+        if stock.symbol == symbol:
+            stock.share += share
+            user.save()
+            return('success')
+
+    newShare = OwnedStock(symbol = symbol, share = share)
+    user.ownedStock.append(newShare)
+    user.save()
+    return('success')
+
+
+
+
+
+def sellStock(username, symbol, share):
+    profit = Stocks.objects(symbol= symbol).first().price * share
+    user = User.objects(username = username).first()
+    
+    for i in range(len(user.ownedStock)):
+        stock = user.ownedStock[i]
+        
+        if stock.symbol == symbol:
+            if stock.share < share:
+                return 'dont have enough shares to sell'
+            else:
+                user.balence += profit
+                stock.share -= share      #need to check if its chanegd right away
+                if stock.share == 0:
+                    user.ownedStock.pop(i)
+                user.save()
+                return 'success'
+    return 'stock not found'
+
+
+
+
+
+
+
+
+
+
 User.drop_collection()
 LoginReturn.drop_collection()
 Stocks.drop_collection()
 print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 
-newUser('a', 'email', 'pass')
+newStock('apl', 'apple', 200 ,'change')
+newStock('DICK', 'dick org', 1000000, 'change')
+newStock('gll', 'Goglle', 1, 'change')
+addUser('a', 'email', 'pass')
 addToWatchList('a','apl')
 addToWatchList('a','gll')
+addToWatchList('a', 'DICK')
+
+print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
 print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
-print(removeFromWatchList('a', 'apl'))
-print(removeFromWatchList('a', 'asdsad'))
+
+
+print('start buying----------------------------------------------------------------------------------------------')
+print(buyStock('a','DICK', 1))
 print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+print(buyStock('a','apl',3))
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+print('start selling----------------------------------------------------------------------------------------------')
+print(sellStock('a', 'gll', 9))
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+print(sellStock('a', 'apl', 3))
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+print(buyStock('a','apl',3))
+print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+# print('----------------------------------------------------------------------------------------------')
+# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+# print(removeFromWatchList('a', 'apl'))
+# print(removeFromWatchList('a', 'asdsad'))
+# print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+
 

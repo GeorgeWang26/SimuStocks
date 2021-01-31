@@ -1,5 +1,5 @@
 # SimuStocks
-**Our Team:** Zheng Wang, Derek Li, Rachel Kwan  
+**Our Team:** [Zheng Wang](https://github.com/ZhengWang26), [Derek Li](https://github.com/rejieli), [Rachel Kwan](https://github.com/rkwan05)  
 
 **Description:**  
 SimuStocks is an educational stock simulator that allows students and any stock-market beginner/enthusiasts to practice their trading skills or to become familiar with the stock market, without the risk of losing any real-life funds! This simulator is connected directly to real-time stock markets, including stock prices and daily changes. In this simulator, flexible and user-friendly trading are integrated into the program to allow for a real-life experience of the stock market without fears of any financial losses. SimuStocks provide a valuable learning experience in schools and professional environments that can benefit beginners towards building a stable and rewarding financial portfolio!

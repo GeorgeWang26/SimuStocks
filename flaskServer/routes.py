@@ -148,9 +148,11 @@ def sellStock():
     username = request.form['username']
     symbol = request.form['symbol']
     share = request.form['share']
+
     result = db.buyStock(username, symbol, share)
     balence = db.getBalence(username)
     stockInfo = db.getSingleStockOwned(username, symbol)
+
     return jsonify(result = result, balence = balence, stock = stockInfo)
 
 

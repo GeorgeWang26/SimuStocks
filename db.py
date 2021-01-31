@@ -195,6 +195,7 @@
 #     for i in range(len(user.ownedStock)):
 #         stock = user.ownedStock[i]
         
+<<<<<<< HEAD
 #         if stock.symbol == symbol:
 #             if stock.share < share:
 #                 return 'dont have enough shares to sell'
@@ -274,3 +275,94 @@
 #     User.drop_collection()
 #     LoginReturn.drop_collection()
 #     Stocks.drop_collection()
+=======
+        if stock.symbol == symbol:
+            if stock.share < share:
+                return 'dont have enough shares to sell'
+            else:
+                user.balence += profit
+                stock.share -= share      #need to check if its chanegd right away
+                if stock.share == 0:
+                    user.ownedStock.pop(i)
+                user.save()
+                return 'success'
+    return 'stock not found'
+
+
+
+def getOwnedStock(username):
+    user = User.objects(username = username).first()
+    totalValue = 0
+    stocks = []
+    for i in user.ownedStock:
+        symbol = i.symbol
+        share = i.share
+        price = Stocks.objects(symbol = symbol).first().price
+        value = share * price
+        totalValue += value
+        temp = {}
+        temp['symbol'] = symbol
+        temp['price'] = price
+        temp['share'] = share
+        temp['value'] = value
+        stocks.append(temp)
+    result = {'stocks': stocks, 'totalValue': totalValue}
+    return result
+
+
+def getBalence(username):
+    user = User.objects(username = username).first()
+    balence = user.balence
+    return balence
+
+
+def getStockInfo(symbol):
+    symbol = symbol.upper()
+    stock = Stocks.objects(symbol = symbol).first()
+    if stock:
+        return {'price': stock.price, 'change': stock.change, 'symbol': symbol}
+    return 'no stock found'
+
+
+def getSingleStockOwned(username, symbol):
+    symbol = symbol.upper()
+    user = User.objects(username = username).first()
+    for i in user.ownedStock:
+        if i.symbol == symbol:
+            stock = Stocks.objects(symbol = symbol).first()
+            temp = {'symbo': symbol, 'price': stock.price, 'share': i.share, 'value': (stock.price * i.share)}
+            return {'stock': temp}
+    return 'empty'
+
+
+if __name__ == '__main__':
+
+    User.drop_collection()
+    LoginReturn.drop_collection()
+    Stocks.drop_collection()
+    print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+    addUser('a','email','pass')
+
+
+    print(getWatchList('a'))
+    
+    # buyStock('a', 'aapl', 3)
+    # buyStock('a', 'goog', 3)
+    # buyStock('a', 'aapl', 1)
+    # buyStock('a', 'amzn', 2)
+    # # 4apple 3google 2amazon
+    # print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # # print(getBalence('a'))
+    # # print(getStockInfo('aapl'))
+
+    # print(json.dumps(json.loads(Stocks.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+    # print(json.dumps(json.loads(User.objects().to_json()), sort_keys=True, indent=4), '\n\n\n')
+
+
+    User.drop_collection()
+    LoginReturn.drop_collection()
+    Stocks.drop_collection()
+>>>>>>> 67d2f6560a28bb6076b17f0050600d82078e251b
